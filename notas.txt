@@ -1,0 +1,96 @@
+User
+Group
+Message
+Room/Chat
+Role
+UserGroup
+Session
+
+///
+Core:
+    Database
+    Views?
+    File Management
+    Socket
+    Log?
+
+modules:
+
+
+///
+
+app/
+    storage/
+        images/
+        files/
+    src/
+        core
+            database/
+            config/
+            log/
+            files/
+                file.js 
+
+
+        modules
+            users
+                user.model.js // Schema
+                users.controller.js // Endpoint methods 
+                // user.service.js (CRUD actions)
+                users.routes.js
+                validations/
+                    login.validation 
+                    ...
+        routes
+            api.js
+
+
+
+
+GET api.com/usuarios (endpoint)
+POST api.com/usuarios
+
+routes:
+    GET /usuarios
+
+
+
+ROUTES
+// usuarios
+    GET /usuarios => [authMiddleware, otroMiddleware] =>  usersController.getAll 
+    POST /usuarios => usersController.create 
+    PUT /usuarios => usersController.update
+
+// groups
+    GET /groups => groupsController.getAll
+    POST /groups  => groupsController.create
+    PUT /groups => groupsController.update
+
+
+
+    package.json
+    app.js
+
+
+Models 
+    User 
+        () => {
+            DB.init('users')
+        }
+
+Users.Controller 
+
+    getAll() {
+        return User.query()
+    }
+
+    create(data) {
+        User.create({
+            password: 'Juan'
+        })
+    }
+
+
+GET /usuarios => usersController.getAll 
+
+app.put('/usuarios', usersController.update )
