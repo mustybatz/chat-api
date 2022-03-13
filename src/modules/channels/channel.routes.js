@@ -1,6 +1,8 @@
 const router = require('express').Router();
 const controller = require('./channels.controller');
 
+
+
 /**
  * @swagger
  *   /api/channels:
@@ -75,7 +77,7 @@ router.get('/createlink/:owner', controller.getLink);
 
 /**
  * @swagger
- *   /api/channels/{id}/{email}:
+ *   /api/channels/{id}/join/{email}:
  *     get:
  *       tags:
  *       - Channels
@@ -93,5 +95,6 @@ router.get('/createlink/:owner', controller.getLink);
  *         200:
  *           description: An object with a single message's data
  */
-router.get('/api/channels/:id/:email', controller.getLink);
+router.get('/:id/join/:email', controller.join);
+
 module.exports = router;

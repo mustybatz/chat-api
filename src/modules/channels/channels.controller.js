@@ -1,5 +1,6 @@
 const Channel = require("./channel.model");
 const User = require("../users/user.model");
+const { ObjectId } = require("mongodb");
 
 const ChannelsController = {
     getAll: (req, res) => {
@@ -46,7 +47,7 @@ const ChannelsController = {
 
             const channel = new Channel();
 
-            const { _id } = await channel.getOneByOwner(userData._id);
+            const { _id } = await channel.getOneByOwner(userData._id.toString());
 
             return res.status(200).json({ link: `http://localhost:3001/api/channels/join/${_id}/<your_email_here>` });
         } catch (error) {
@@ -65,22 +66,32 @@ const ChannelsController = {
 
             const channel = new Channel();
 
+            console.log(`id: ${id}, email: ${email}`);
+
             const channelData = await channel.getOne(id);
+
+            console.log(channelData);
 
             const user = new User();
 
             const userData = await user.getByEmail(email);
+            console.log(userData);
 
-            if (channelData.members.includes(userData._id)) {
+            if (channelData.members.includes(userData._id.toString())) {
                 return res.status(400).json({ message: "User already in channel" });
             }
 
-            channelData.members.push(userData._id);
+            channelData.members.push(userData._id.toString());
 
-            await channel.update(channelData);
+            console.log(channelData)
+
+            await channel.update(channelData._id.toString(), channelData);
 
             return res.status(200).json({ message: "User added to channel" });
         } catch (error) {
+
+            console.error(error)
+
             if (error.message === 'User not found' || error.message === 'Channel not found') {
                 return res.status(404).json({ message: error.message });
             }

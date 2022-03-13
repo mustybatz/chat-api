@@ -35,6 +35,7 @@ class Channel extends Model {
     }
 
     async getOneByOwner(owner) {
+
         const channel = await this.collection.findOne({ owner });
 
         if (!channel) {
@@ -45,7 +46,7 @@ class Channel extends Model {
     }
 
     async update(id, data) {
-        const channel = await this.collection.findOne({ _id: id });
+        const channel = await this.getOne(id);
 
         if (!channel) {
             throw new Error('Channel not found');
@@ -67,7 +68,11 @@ class Channel extends Model {
             channel.messages = data.messages;
         }
 
-        await this.collection.updateOne({ _id: id }, channel);
+        delete channel._id;
+
+        await this.collection.updateOne({ _id: id }, {
+            $set: channel
+        });
 
         return this.getOne(id);
     }
